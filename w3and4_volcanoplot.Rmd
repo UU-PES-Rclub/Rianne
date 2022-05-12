@@ -1,0 +1,13 @@
+---
+title: "let itwork"
+author: "Rianne Kluck"
+date: '2022-05-12'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+setwd
+read()
+```
