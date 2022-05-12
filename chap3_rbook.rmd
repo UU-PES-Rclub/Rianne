@@ -1,0 +1,122 @@
+---
+title: "chapter_3_book"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r} 
+#dataframe
+mpg <- ggplot2::mpg
+nrow(mpg)
+ncol(mpg)
+dim(mpg)
+
+#drv means the the type of drive train
+#cyl is the number of cylinders
+#hwy is the highway miles per gallos #cty is the city miles per gallon
+```
+```{r, fig.width = 1, fig.height = 1}
+ggplot(mpg)
+
+```
+
+```{r, fig.width = 4, fig.height = 2}
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy))
+```
+
+
+```{r, fig.width = 2, fig.height = 2}
+ggplot(mpg) +
+  geom_point(mapping = aes(hwy, cyl))
+```
+
+```{r, fig.width = 3, fig.height = 1.5}
+ggplot(mpg) +
+  geom_point(mapping = aes(class, drv))
+```
+
+```{r, fig.width = 4, fig.height = 2}
+#uses colors to distinguish discrete variable -> class 
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = class))
+#uses size to distinguish discrete variable -> class 
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = class))
+#uses alpha (aesthetic) to distinguish discrete variable -> class 
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, alpha = class))
+#uses shape (aesthetic) to distinguish discrete variable -> class  #ggplot can only use 6 shapes at a time
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, shape = class))
+#example how not to define a specific colour for the discrete variable color
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = "blue"))
+#how to use a specific colors to distinguish discrete variable -> class 
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy), color = "blue")
+```
+
+
+```{r, fig.width = 3, fig.height = 1.5}
+#3.3.1.1 see answer in chunk above
+#3.3.1.2 
+# categorical: model,manufacturer,Trans, drv,fl,class
+# continuous: displ, year, cyl, cty, hwy
+#3.3.1.3
+#continous
+#cyl
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = cyl))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = cyl))
+#a continous variable cannot be mapped to a schape
+#ggplot(mpg) +
+  #geom_point(mapping = aes(displ, hwy, shape = cyl))
+#cty
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = cty))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = cty))
+#year
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = year))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = year))
+
+```
+
+
+```{r, fig.width = 3, fig.height = 1.5}
+#Discrete/categorical
+#model
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = model))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = model))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, shape = model))
+#trans
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = trans))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = trans))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, shape = trans))
+#drv
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, color = drv))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, size = drv))
+ggplot(mpg) +
+  geom_point(mapping = aes(displ, hwy, shape = drv))
+
+```
+
+
+
