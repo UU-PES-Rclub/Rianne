@@ -1,5 +1,5 @@
 ---
-title: "chapter_3_book"
+title: "chapter3"
 output: github_document
 ---
 
@@ -28,46 +28,37 @@ ggplot(mpg)
 ```{r, fig.width = 4, fig.height = 2}
 ggplot(mpg) +
   geom_point(mapping = aes(displ, hwy))
-  geom_point(aes(displ, hwy))
 ```
 
 
 ```{r, fig.width = 2, fig.height = 2}
 ggplot(mpg) +
   geom_point(mapping = aes(hwy, cyl))
-  geom_point(aes(hwy, cyl))
 ```
 
 ```{r, fig.width = 3, fig.height = 1.5}
 ggplot(mpg) +
   geom_point(mapping = aes(class, drv))
-  geom_point(aes(class, drv))
 ```
 
 ```{r, fig.width = 4, fig.height = 2}
 #uses colors to distinguish discrete variable -> class 
 ggplot(mpg) +
-  geom_point(mapping = aes(displ, hwy, color = class))
   geom_point(aes(displ, hwy, color = class))
 #uses size to distinguish discrete variable -> class 
 ggplot(mpg) +
-  geom_point(mapping = aes(displ, hwy, size = class))
   geom_point(aes(displ, hwy, size = class))
 #uses alpha (aesthetic) to distinguish discrete variable -> class 
 ggplot(mpg) +
-  geom_point(mapping = aes(displ, hwy, alpha = class))
   geom_point(aes(displ, hwy, alpha = class))
 #uses shape (aesthetic) to distinguish discrete variable -> class  #ggplot can only use 6 shapes at a time
 ggplot(mpg) +
-  geom_point(mapping = aes(displ, hwy, shape = class))
   geom_point(aes(displ, hwy, shape = class))
 #example how not to define a specific colour for the discrete variable color
 ggplot(mpg) +
-  geom_point(mapping = aes(displ, hwy, color = "blue"))
   geom_point(aes(displ, hwy, color = "blue"))
 #how to use a specific colors to distinguish discrete variable -> class 
 ggplot(mpg) +
-  geom_point(mapping = aes(displ, hwy), color = "blue")
   geom_point(aes(displ, hwy), color = "blue")
 ```
 

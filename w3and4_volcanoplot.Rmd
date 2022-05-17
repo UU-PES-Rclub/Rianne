@@ -8,6 +8,13 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
-setwd
-read()
+library(tidyverse)
+setwd("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3")
+```
+
+```{r}
+hyp15 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp15ALL")
+hyp45 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp45ALL")
+hyp90 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp90ALL")
+hyp180 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp180ALL")
 ```
