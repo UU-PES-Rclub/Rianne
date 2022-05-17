@@ -1,0 +1,48 @@
+---
+title: "Challege_2"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggblanket)
+library(ggrepel)
+library(tidyverse)
+
+setwd("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Challenge2_data")
+
+lumi <- read.delim("lumi_tidy_data.txt", sep="", header=T)
+```
+
+#rebuilding figure
+```{r}
+ggplot(lumi, aes(ZT, RLUs, line = Genotype, color = Genotype)) +
+  geom_line() +
+  geom_point() +
+  theme_bw() +
+  xlim(00.00, 120.00)+
+  ylim(0, 4000)
+```
+#changing colors of figure
+```{r}
+mycolors <- c("cyan", "pink", "green", "yellow")
+
+
+ggplot(lumi, aes(ZT, RLUs, line = Genotype, color = Genotype)) +
+  geom_line() +
+  geom_point() +
+  #scale_fill_manual(values = mycolors) +
+  theme_classic() +
+  xlim(00.00, 120.00)+
+  ylim(0, 4000) 
+  
+
+```
+
+
+
+```{r, echo=FALSE}
+
+```
+
