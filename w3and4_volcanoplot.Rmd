@@ -8,13 +8,148 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
+library(ggblanket)
+library(ggrepel)
 library(tidyverse)
-setwd("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3")
+setwd("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3")
 ```
 
 ```{r}
-hyp15 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp15ALL")
-hyp45 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp45ALL")
-hyp90 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp90ALL")
-hyp180 <- load("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp180ALL")
+hyp15 <- read.csv("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp15ALL.csv")
+hyp45 <- read.csv("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-hyp45ALL.csv")
+hyp90 <- read.csv("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp90ALL.csv")
+hyp180 <- read.csv("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-Hyp180ALL.csv")
+hypALL <- read.csv("/Users/riann/OneDrive - Universiteit Utrecht/PES_RClub/Chapter_3/Data_ch3/LJModified-HypALL.csv")
 ```
+
+#subscripts for volcano plots
+```{r}
+log2fc <- expression(paste('log'[2]*' FC')) #subscript
+log10fdr <- expression(paste('-log'[10]*' FDR')) #subscript
+```
+#plot of hyp15 without graphical adjustments
+```{r}
+ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal)) + 
+  geom_point()
+
+ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal)) +
+  geom_point() +
+  ggtitle("hyp15") +
+  xlab(log2fc) +
+  ylab(log10fdr) +
+  theme_bw() + 
+  geom_vline(xintercept = c(-1, 1), col= 'purple', linetype = 2) +
+  geom_hline(yintercept=-log10(0.01), col="red", linetype = 2)
+
+```
+
+#plot the DE of hyp15 genes in color
+```{r}
+hyp15$diffexp <- "NO"
+hyp15$diffexp[hyp15$logFC > 1 & hyp15$minusLOG10.adj.pVal > -log10(0.05)] <- "UP"
+hyp15$diffexp[hyp15$logFC < -1 & hyp15$minusLOG10.adj.pVal > -log10(0.05)] <- "DOWN"
+hyp15$label <- NA
+hyp15$label[hyp15$diffexp != "NO"] <- hyp15$TAIR10.id[hyp15$diffexp != "NO"]
+
+#without labels
+ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+  geom_point() + 
+  theme_minimal() +
+  scale_color_manual(values=c("blue", "black", "red")) +
+  geom_vline(xintercept = c(-1, 1), col= 'purple', linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="red", linetype = 2)
+#with labels
+ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
+  geom_point() + 
+  theme_minimal() +
+  geom_text(show.legend = FALSE) +
+  scale_color_manual(values=c("blue", "black", "red")) +
+  geom_vline(xintercept = c(-1, 1), col= 'purple', linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="red", linetype = 2)
+#with labels with geom_text_repel
+ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
+  geom_point() + 
+  theme_minimal() +
+  geom_text_repel(show.legend = FALSE) +
+  scale_color_manual(values=c("blue", "black", "red")) +
+  geom_vline(xintercept = c(-1, 1), col= 'purple', linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="red", linetype = 2)
+
+```
+```{r}
+hyp45$diffexp <- "NO"
+hyp45$diffexp[hyp45$logFC > 1 & hyp45$minusLOG10.adj.pVal > -log10(0.05)] <- "UP"
+hyp45$diffexp[hyp45$logFC < -1 & hyp45$minusLOG10.adj.pVal > -log10(0.05)] <- "DOWN"
+hyp45$label <- NA
+hyp45$label[hyp45$diffexp != "NO"] <- hyp45$TAIR10.id[hyp45$diffexp != "NO"]
+
+#without labels
+ggplot(hyp45, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+  geom_point() + 
+  theme_minimal() +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+
+#with labels with geom_text_repel
+ggplot(hyp45, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
+  geom_point() + 
+  theme_minimal() +
+  geom_text_repel(show.legend = FALSE) +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+```
+
+```{r}
+hyp90$diffexp <- "NO"
+hyp90$diffexp[hyp90$logFC > 1 & hyp90$minusLOG10.adj.pVal > -log10(0.05)] <- "UP"
+hyp90$diffexp[hyp90$logFC < -1 & hyp90$minusLOG10.adj.pVal > -log10(0.05)] <- "DOWN"
+hyp90$label <- NA
+hyp90$label[hyp90$diffexp != "NO"] <- hyp90$TAIR10.id[hyp90$diffexp != "NO"]
+
+#without labels
+ggplot(hyp90, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+  geom_point() + 
+  theme_minimal() +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+
+#with labels with geom_text_repel
+ggplot(hyp90, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
+  geom_point() + 
+  theme_minimal() +
+  geom_text_repel(show.legend = FALSE) +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+```
+
+
+```{r}
+hyp180$diffexp <- "NO"
+hyp180$diffexp[hyp180$logFC > 1 & hyp180$minusLOG10.adj.pVal > -log10(0.05)] <- "UP"
+hyp180$diffexp[hyp180$logFC < -1 & hyp180$minusLOG10.adj.pVal > -log10(0.05)] <- "DOWN"
+hyp180$label <- NA
+hyp180$label[hyp180$diffexp != "NO"] <- hyp180$TAIR10.id[hyp180$diffexp != "NO"]
+
+#without labels
+ggplot(hyp180, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+  geom_point() + 
+  theme_minimal() +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+
+#with labels with geom_text_repel
+ggplot(hyp180, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
+  geom_point() + 
+  theme_minimal() +
+  geom_text_repel(show.legend = FALSE) +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+```
+
+
