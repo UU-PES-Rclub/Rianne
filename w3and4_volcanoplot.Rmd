@@ -75,6 +75,8 @@ ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
   geom_vline(xintercept = c(-1, 1), col= 'purple', linetype = 2) +
   geom_hline(yintercept=-log10(0.05), col="red", linetype = 2)
 ```
+
+
 ```{r}
 hyp45$diffexp <- "NO"
 hyp45$diffexp[hyp45$logFC > 1 & hyp45$minusLOG10.adj.pVal > -log10(0.05)] <- "UP"
@@ -83,7 +85,7 @@ hyp45$label <- NA
 hyp45$label[hyp45$diffexp != "NO"] <- hyp45$TAIR10.id[hyp45$diffexp != "NO"]
 
 #without labels
-ggplot(hyp45, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+a <- ggplot(hyp45, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
   geom_point() + 
   theme_minimal() +
   scale_color_manual(values=c("cyan", "black", "yellow")) +
@@ -149,6 +151,43 @@ ggplot(hyp180, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
   scale_color_manual(values=c("cyan", "black", "yellow")) +
   geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
   geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+```
+
+```{r}
+ggplot(hypALL) + 
+  geom_point(aes(logFC,minusLOG10.adj.pVal)) + 
+  facet_wrap(~ data)
+
+ggplot(hypALL) + 
+  geom_point(aes(logFC,minusLOG10.adj.pVal)) + 
+  facet_grid(~ data)
+```
+
+```{r}
+hypALL$diffexp <- "NO"
+hypALL$diffexp[hypALL$logFC > 1 & hypALL$minusLOG10.adj.pVal > -log10(0.05)] <- "UP"
+hypALL$diffexp[hypALL$logFC < -1 & hypALL$minusLOG10.adj.pVal > -log10(0.05)] <- "DOWN"
+hypALL$label <- NA
+hypALL$label[hypALL$diffexp != "NO"] <- hypALL$TAIR10.id[hypALL$diffexp != "NO"]
+
+
+ggplot(hypALL, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+  geom_point() + 
+  theme_minimal() +
+  facet_wrap(~ data) +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+
+
+ggplot(hypALL, aes(logFC, minusLOG10.adj.pVal, col=diffexp)) +
+  geom_point() + 
+  theme_minimal() +
+  facet_grid(~ data) +
+  scale_color_manual(values=c("cyan", "black", "yellow")) +
+  geom_vline(xintercept = c(-1, 1), col= "259", linetype = 2) +
+  geom_hline(yintercept=-log10(0.05), col="259", linetype = 2)
+
 ```
 
 
