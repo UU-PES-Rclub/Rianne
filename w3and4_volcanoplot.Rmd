@@ -74,7 +74,6 @@ ggplot(hyp15, aes(logFC, minusLOG10.adj.pVal, col=diffexp, label=label)) +
   scale_color_manual(values=c("blue", "black", "red")) +
   geom_vline(xintercept = c(-1, 1), col= 'purple', linetype = 2) +
   geom_hline(yintercept=-log10(0.05), col="red", linetype = 2)
-
 ```
 ```{r}
 hyp45$diffexp <- "NO"
