@@ -1,0 +1,58 @@
+---
+title: "Chapter_4"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#coding basics
+```{r}
+1/200*30
+
+(59+73+2)/3
+
+sin(pi/2)
+```
+#creating objects
+```{r}
+x <- 3*4  #alt minus shortcut
+x
+```
+#assignments
+```{r}
+this_is_a_really_long_name <- 2.5
+this_is_a_really_long_name
+this_is_a_really_long_name <- 3.5
+this_is_a_really_long_name
+
+r_rocks <- 2 ^ 3
+#r_rock
+#R-rocks
+```
+#calling functions
+```{r}
+seq(1,10)
+x <- "hello world"
+y <- seq(1, 10, length.out = 5)
+y
+(y <- seq(1, 10, length.out = 5))
+```
+# exercises
+```{r}
+#4.4.1
+#the second line does not work because there no i in my_variable
+
+#4.4.2
+library(tidyverse)
+library(ggplot2)
+ggplot(data = mpg) + 
+  geom_point( mapping = aes(displ, hwy))
+
+filter(mpg, cyl == 8)
+filter(diamonds, carat > 3)
+
+#4.4.3
+#alt shift K gives a overview of shortcuts
+```
