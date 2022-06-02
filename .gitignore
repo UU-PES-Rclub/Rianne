@@ -2,8 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-*.jpg
-*.jpeg
 *.png
 *.zip
 *.html
