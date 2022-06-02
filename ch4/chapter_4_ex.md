@@ -49,7 +49,7 @@ this_is_a_really_long_name
 ``` r
 r_rocks <- 2 ^ 3
 #r_rock
-#R-rocks
+#R-rocks # both contain typos
 ```
 
 \#calling functions
