@@ -22,7 +22,7 @@ mycolors <- c("cyan", "pink", "green", "yellow")
 ggplot(lumi, aes(ZT, RLUs, line = Genotype, color = Genotype)) +
   geom_line() +
   geom_point() +
-  #scale_fill_manual(values = mycolors) +
+  scale_color_manual(values = mycolors) +
   theme_classic() +
   xlim(00.00, 120.00)+
   ylim(0, 4000) 
