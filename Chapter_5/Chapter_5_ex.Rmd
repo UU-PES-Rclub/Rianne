@@ -1,0 +1,55 @@
+---
+title: "Chapter5"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Chapter 5 Data Transformation
+
+##5.1.1  Prerequisites
+```{r}
+library(tidyverse)
+library(nycflights13)
+flights <- nycflights13::flights
+head(flights)
+```
+##5.2 Filter rows
+```{r}
+filter(flights, month == 1, day == 1)
+#to save selection in a new separate dataframe
+jan1 <- filter(flights, month == 1, day == 1)
+#to save as a dataframe and print the results
+(dec25 <- filter(flights, month == 12, day == 25))
+```
+
+###5.2.1 Comparisons
+```{r}
+sqrt(2) ^ 2 == 2
+1 / 49 * 49 == 1
+
+near(sqrt(2) ^ 2,  2)
+near(1 / 49 * 49, 1)
+```
+
+###5.2.2 Logical Operators
+```{r}
+#flights that departed in nov or dec
+filter(flights, month == 11 | month == 12)
+#to select months without running in to numerical trouble
+nov_dec <- filter(flights, month %in% c(11, 12))
+
+filter(flights, !(arr_delay > 120 | dep_delay > 120))
+filter(flights, arr_delay <= 120, dep_delay <= 120)
+
+
+
+
+
+```
+
+
+
+
