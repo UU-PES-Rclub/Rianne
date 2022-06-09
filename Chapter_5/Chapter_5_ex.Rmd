@@ -43,13 +43,83 @@ nov_dec <- filter(flights, month %in% c(11, 12))
 
 filter(flights, !(arr_delay > 120 | dep_delay > 120))
 filter(flights, arr_delay <= 120, dep_delay <= 120)
+```
 
 
+###5.2.3 Missing values
+```{r}
+NA > 5
+
+10 == NA
+
+NA + 10
+
+NA / 2
+
+NA == NA
+
+NA == NA
+
+
+# Let x be Mary's age. We don't know how old she is.
+x <- NA
+
+# Let y be John's age. We don't know how old he is.
+y <- NA
+# Are John and Mary the same age?
+x == y
+
+is.na(x)
+# We don't know!
+```
+
+```{r}
+df <- tibble(x = c(1, NA, 3))
+filter(df, x > 1)
+filter(df, is.na(x) | x > 1)
+
+```
+
+###5.2.4 Exercises
+####5.2.4.1 flight filter exercises
+```{r}
+#all flights that
+head(flights)
+arr_two <- filter(flights, arr_delay >= 120)
+hou <- filter(flights, dest == "IAH" | dest == "HOU")
+op_by_del_un_am <- filter(flights, carrier == "DL" | carrier == "AA" | carrier == "UA")
+sum_dep <- filter(flights, month == 7 | month == 8 | month == 9)
+only_arr_late <-  filter(flights, dep_delay == 0 & arr_delay >= 120)
+del_30min <- filter(flights, dep_delay == 60 & arr_delay <= 30)
+```
+
+####5.2.4.2 use of between
+```{r}
+
+head(flights)
+arr_two_b <- between(flights$arr_delay, 2, 344)
+#is not as great as it returns a value and not a dataframe
+
+table(is.na(flights$dep_time))
+
+```
+
+###5.3 Arrange
+```{r}
+arrange(flights, year, month, day)
+arrange(flights, desc(dep_delay))
+
+df <-  tibble(x=c(5,2,NA))
+arrange(df, x)
+arrange(df, desc(x))
+```
+
+####5.3.1 Exercises
+```{r}
+arrange(flights, desc(is.na(dep_delay)))
+arrange(flights, (is.na(dep_delay)))
 
 
 
 ```
-
-
-
 
