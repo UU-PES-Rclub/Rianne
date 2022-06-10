@@ -181,86 +181,6 @@ filter(flights, arr_delay <= 120, dep_delay <= 120)
     ## #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
     ## #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
 
-\###5.2.3 Missing values
-
-``` r
-NA > 5
-```
-
-    ## [1] NA
-
-``` r
-10 == NA
-```
-
-    ## [1] NA
-
-``` r
-NA + 10
-```
-
-    ## [1] NA
-
-``` r
-NA / 2
-```
-
-    ## [1] NA
-
-``` r
-NA == NA
-```
-
-    ## [1] NA
-
-``` r
-NA == NA
-```
-
-    ## [1] NA
-
-``` r
-# Let x be Mary's age. We don't know how old she is.
-x <- NA
-
-# Let y be John's age. We don't know how old he is.
-y <- NA
-# Are John and Mary the same age?
-x == y
-```
-
-    ## [1] NA
-
-``` r
-is.na(x)
-```
-
-    ## [1] TRUE
-
-``` r
-# We don't know!
-```
-
-``` r
-df <- tibble(x = c(1, NA, 3))
-filter(df, x > 1)
-```
-
-    ## # A tibble: 1 × 1
-    ##       x
-    ##   <dbl>
-    ## 1     3
-
-``` r
-filter(df, is.na(x) | x > 1)
-```
-
-    ## # A tibble: 2 × 1
-    ##       x
-    ##   <dbl>
-    ## 1    NA
-    ## 2     3
-
 \###5.2.4 Exercises \####5.2.4.1 flight filter exercises
 
 ``` r
@@ -287,7 +207,36 @@ hou <- filter(flights, dest == "IAH" | dest == "HOU")
 op_by_del_un_am <- filter(flights, carrier == "DL" | carrier == "AA" | carrier == "UA")
 sum_dep <- filter(flights, month == 7 | month == 8 | month == 9)
 only_arr_late <-  filter(flights, dep_delay == 0 & arr_delay >= 120)
-del_30min <- filter(flights, dep_delay == 60 & arr_delay <= 30)
+del_30min <- filter(flights, dep_delay >= 60 & arr_delay >= 30)
+
+#or for del_30min
+del_30min <- flights %>%
+  filter(dep_delay >= 60) %>%
+  mutate(difference = dep_delay-arr_delay) %>%
+  filter(difference >= 30)
+del_30min
+```
+
+    ## # A tibble: 2,074 × 20
+    ##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+    ##    <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+    ##  1  2013     1     1     1716           1545        91     2140           2039
+    ##  2  2013     1     1     2205           1720       285       46           2040
+    ##  3  2013     1     1     2326           2130       116      131             18
+    ##  4  2013     1     3     1503           1221       162     1803           1555
+    ##  5  2013     1     3     1821           1530       171     2131           1910
+    ##  6  2013     1     3     1839           1700        99     2056           1950
+    ##  7  2013     1     3     1850           1745        65     2148           2120
+    ##  8  2013     1     3     1923           1815        68     2036           1958
+    ##  9  2013     1     3     1941           1759       102     2246           2139
+    ## 10  2013     1     3     1950           1845        65     2228           2227
+    ## # … with 2,064 more rows, and 12 more variables: arr_delay <dbl>,
+    ## #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
+    ## #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>,
+    ## #   difference <dbl>
+
+``` r
+flights_6am <- filter(flights, dep_time <= 600 & dep_time >= 0000)
 ```
 
 \####5.2.4.2 use of between
@@ -311,14 +260,34 @@ head(flights)
 
 ``` r
 arr_two_b <- between(flights$arr_delay, 2, 344)
-#is not as great as it returns a value and not a dataframe
-
 table(is.na(flights$dep_time))
 ```
 
     ## 
     ##  FALSE   TRUE 
     ## 328521   8255
+
+``` r
+#leos example
+filter(flights,between(month,7,9))
+```
+
+    ## # A tibble: 86,326 × 19
+    ##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+    ##    <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+    ##  1  2013     7     1        1           2029       212      236           2359
+    ##  2  2013     7     1        2           2359         3      344            344
+    ##  3  2013     7     1       29           2245       104      151              1
+    ##  4  2013     7     1       43           2130       193      322             14
+    ##  5  2013     7     1       44           2150       174      300            100
+    ##  6  2013     7     1       46           2051       235      304           2358
+    ##  7  2013     7     1       48           2001       287      308           2305
+    ##  8  2013     7     1       58           2155       183      335             43
+    ##  9  2013     7     1      100           2146       194      327             30
+    ## 10  2013     7     1      100           2245       135      337            135
+    ## # … with 86,316 more rows, and 11 more variables: arr_delay <dbl>,
+    ## #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
+    ## #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>
 
 \###5.3 Arrange
 
