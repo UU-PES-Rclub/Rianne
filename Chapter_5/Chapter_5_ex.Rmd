@@ -78,6 +78,7 @@ arr_two_b <- between(flights$arr_delay, 2, 344)
 table(is.na(flights$dep_time))
 
 
+
 #leos example
 filter(flights,between(month,7,9))
 
@@ -95,9 +96,10 @@ arrange(df, desc(x))
 
 ####5.3.1 Exercises
 ```{r}
-arrange(flights, desc(is.na(dep_delay)))
-arrange(flights, (is.na(dep_delay)))
-
+arrange(flights, desc(is.na(arr_time)))
+arrange(flights,desc(dep_delay),desc(arr_delay))
+arrange(flights,dep_time)
+arrange(flights,air_time)
 
 
 ```
