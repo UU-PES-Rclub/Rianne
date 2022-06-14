@@ -96,11 +96,65 @@ arrange(df, desc(x))
 
 ####5.3.1 Exercises
 ```{r}
+#missing values
 arrange(flights, desc(is.na(arr_time)))
+#most delayed flights
 arrange(flights,desc(dep_delay),desc(arr_delay))
 arrange(flights,dep_time)
-arrange(flights,air_time)
 
+#sort flights to find the fastest flights
+arrange(flights,air_time)
+arrange(flights,desc(distance))
+arrange(flights,desc(distance),air_time)
+
+#flight travelled farthest and flight travelled shortest
+arrange(flights,desc(distance))
+arrange(flights,distance)
+
+```
+#5.4
+
+```{r}
+#Select columns by name
+select(flights, year, month, day)
+
+#Select all columns between year and day (inclusive)
+select(flights, year:day)
+
+#Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+
+#to move certain colums to the start of the data frame
+select(flights, time_hour, air_time, everything())
+```
+
+
+
+###5.4.1 Exercises
+####1. Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights
+```{r}
+head(flights)
+select(flights,dep_time, dep_delay, arr_time, arr_delay)
+#feels like more work or just as much
+select(flights,dep_time:arr_delay,-sched_arr_time,-sched_dep_time)
+```
+###2. What happens if you include the name of a variable multiple times in a select() call?
+```{r}
+select(flights, arr_time, arr_time, arr_time)
+```
+###3. What does the any_of() function do? Why might it be helpful in conjunction with this vector?
+```{r}
+?any_of
+#any of helps with selecting variables in a character vector and allows for missing values
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+select(flights,any_of(vars))
+```
+####4. Does the result of running the following code surprise you? How do the select helpers deal with case by default? How can you change that default?
+```{r}
+select(flights, contains("TIME"))
+select(flights, contains("TIME", ignore.case = TRUE))
+select(flights, contains("TIME", ignore.case = FALSE))
+#default is at ignore.case=TRUE
 
 ```
 
