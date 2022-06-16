@@ -779,3 +779,183 @@ select(flights, contains("TIME", ignore.case = FALSE))
 ``` r
 #default is at ignore.case=TRUE
 ```
+
+\###5.5.2 Exercises \####1. Currently dep_time and sched_dep_time are
+convenient to look at, but hard to compute with because they’re not
+really continuous numbers. Convert them to a more convenient
+representation of number of minutes since midnight.
+
+``` r
+deps <- select(flights, dep_time, sched_dep_time)
+deps_1 <- mutate(deps,
+                 h_dep_time = dep_time %/% 100,
+                 min_dep_time = dep_time %% 100,
+                 totalmin_dep_time = h_dep_time*60+min_dep_time,
+                 h_sch_dep_time = dep_time %/% 100,
+                 min_sch_dep_time = dep_time %% 100,
+                 totalmin_dep_time = h_sch_dep_time*60+min_dep_time)
+deps_1
+```
+
+    ## # A tibble: 336,776 × 7
+    ##    dep_time sched_dep_time h_dep_time min_dep_time totalmin_dep_time
+    ##       <int>          <int>      <dbl>        <dbl>             <dbl>
+    ##  1      517            515          5           17               317
+    ##  2      533            529          5           33               333
+    ##  3      542            540          5           42               342
+    ##  4      544            545          5           44               344
+    ##  5      554            600          5           54               354
+    ##  6      554            558          5           54               354
+    ##  7      555            600          5           55               355
+    ##  8      557            600          5           57               357
+    ##  9      557            600          5           57               357
+    ## 10      558            600          5           58               358
+    ## # … with 336,766 more rows, and 2 more variables: h_sch_dep_time <dbl>,
+    ## #   min_sch_dep_time <dbl>
+
+#### 2. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?
+
+``` r
+arrs <- mutate(flights,h_dep_time = dep_time %/% 100,
+              min_dep_time = dep_time %% 100,
+              totalmin_dep_time = h_dep_time*60+min_dep_time,
+              h_arr_time = arr_time %/% 100,
+              min_arr_time = arr_time %% 100,
+              totalmin_arr_time = h_arr_time*60+min_arr_time,
+              air_time2 = totalmin_arr_time - totalmin_dep_time)
+arrs <- select(arrs,arr_time,dep_time,totalmin_arr_time,totalmin_dep_time,air_time,air_time2)
+head(arrs)
+```
+
+    ## # A tibble: 6 × 6
+    ##   arr_time dep_time totalmin_arr_time totalmin_dep_time air_time air_time2
+    ##      <int>    <int>             <dbl>             <dbl>    <dbl>     <dbl>
+    ## 1      830      517               510               317      227       193
+    ## 2      850      533               530               333      227       197
+    ## 3      923      542               563               342      160       221
+    ## 4     1004      544               604               344      183       260
+    ## 5      812      554               492               354      116       138
+    ## 6      740      554               460               354      150       106
+
+#### 3. Compare dep_time, sched_dep_time, and dep_delay. How would you expect those three numbers to be related?
+
+``` r
+dep <- select(flights,dep_time,sched_dep_time,dep_delay)
+dep1 <- mutate(dep,dep_delay2 = dep_time - sched_dep_time)
+dep1
+```
+
+    ## # A tibble: 336,776 × 4
+    ##    dep_time sched_dep_time dep_delay dep_delay2
+    ##       <int>          <int>     <dbl>      <int>
+    ##  1      517            515         2          2
+    ##  2      533            529         4          4
+    ##  3      542            540         2          2
+    ##  4      544            545        -1         -1
+    ##  5      554            600        -6        -46
+    ##  6      554            558        -4         -4
+    ##  7      555            600        -5        -45
+    ##  8      557            600        -3        -43
+    ##  9      557            600        -3        -43
+    ## 10      558            600        -2        -42
+    ## # … with 336,766 more rows
+
+``` r
+dep2 <- mutate(flights, h_dep_time = dep_time %/% 100,
+              min_dep_time = dep_time %% 100,
+              totalmin_dep_time = h_dep_time*60+min_dep_time,
+              h_sched_dep_time = sched_dep_time %/% 100,
+              min_sched_dep_time = sched_dep_time %% 100,
+              totalmin_sched_dep_time = h_sched_dep_time*60+min_sched_dep_time,
+              dep_delay2 = totalmin_dep_time - totalmin_sched_dep_time)
+dep3 <- select(dep2,dep_delay,dep_delay2)
+dep3
+```
+
+    ## # A tibble: 336,776 × 2
+    ##    dep_delay dep_delay2
+    ##        <dbl>      <dbl>
+    ##  1         2          2
+    ##  2         4          4
+    ##  3         2          2
+    ##  4        -1         -1
+    ##  5        -6         -6
+    ##  6        -4         -4
+    ##  7        -5         -5
+    ##  8        -3         -3
+    ##  9        -3         -3
+    ## 10        -2         -2
+    ## # … with 336,766 more rows
+
+``` r
+#dep3 results are in minutes
+```
+
+\####4. Find the 10 most delayed flights using a ranking function. How
+do you want to handle ties? Carefully read the documentation for
+min_rank().
+
+``` r
+rank_delay <- mutate(flights, rank = min_rank(dep_delay))
+rank_delay_desc <- arrange(rank_delay,desc(rank))
+rank_delay_desc
+```
+
+    ## # A tibble: 336,776 × 20
+    ##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+    ##    <int> <int> <int>    <int>          <int>     <dbl>    <int>          <int>
+    ##  1  2013     1     9      641            900      1301     1242           1530
+    ##  2  2013     6    15     1432           1935      1137     1607           2120
+    ##  3  2013     1    10     1121           1635      1126     1239           1810
+    ##  4  2013     9    20     1139           1845      1014     1457           2210
+    ##  5  2013     7    22      845           1600      1005     1044           1815
+    ##  6  2013     4    10     1100           1900       960     1342           2211
+    ##  7  2013     3    17     2321            810       911      135           1020
+    ##  8  2013     6    27      959           1900       899     1236           2226
+    ##  9  2013     7    22     2257            759       898      121           1026
+    ## 10  2013    12     5      756           1700       896     1058           2020
+    ## # … with 336,766 more rows, and 12 more variables: arr_delay <dbl>,
+    ## #   carrier <chr>, flight <int>, tailnum <chr>, origin <chr>, dest <chr>,
+    ## #   air_time <dbl>, distance <dbl>, hour <dbl>, minute <dbl>, time_hour <dttm>,
+    ## #   rank <int>
+
+\####5. What does 1:3 + 1:10 return? Why?
+
+``` r
+1:3 + 1:10
+```
+
+    ## Warning in 1:3 + 1:10: longer object length is not a multiple of shorter object
+    ## length
+
+    ##  [1]  2  4  6  5  7  9  8 10 12 11
+
+``` r
+1:3
+```
+
+    ## [1] 1 2 3
+
+``` r
+1:10
+```
+
+    ##  [1]  1  2  3  4  5  6  7  8  9 10
+
+``` r
+1:10+1:3
+```
+
+    ## Warning in 1:10 + 1:3: longer object length is not a multiple of shorter object
+    ## length
+
+    ##  [1]  2  4  6  5  7  9  8 10 12 11
+
+\####6. What trigonometric functions does R provide?
+
+``` r
+?base::Trig
+#shows all the trig functions
+```
+
+\###5.6 Grouped summaries with summarise()

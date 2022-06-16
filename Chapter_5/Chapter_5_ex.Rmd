@@ -157,4 +157,82 @@ select(flights, contains("TIME", ignore.case = FALSE))
 #default is at ignore.case=TRUE
 
 ```
+###5.5.2 Exercises
+####1. Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.
+```{r}
+deps <- select(flights, dep_time, sched_dep_time)
+deps_1 <- mutate(deps,
+                 h_dep_time = dep_time %/% 100,
+                 min_dep_time = dep_time %% 100,
+                 totalmin_dep_time = h_dep_time*60+min_dep_time,
+                 h_sch_dep_time = dep_time %/% 100,
+                 min_sch_dep_time = dep_time %% 100,
+                 totalmin_dep_time = h_sch_dep_time*60+min_dep_time)
+deps_1
+
+```
+#### 2. Compare air_time with arr_time - dep_time. What do you expect to see? What do you see? What do you need to do to fix it?
+```{r}
+arrs <- mutate(flights,h_dep_time = dep_time %/% 100,
+              min_dep_time = dep_time %% 100,
+              totalmin_dep_time = h_dep_time*60+min_dep_time,
+              h_arr_time = arr_time %/% 100,
+              min_arr_time = arr_time %% 100,
+              totalmin_arr_time = h_arr_time*60+min_arr_time,
+              air_time2 = totalmin_arr_time - totalmin_dep_time)
+arrs <- select(arrs,arr_time,dep_time,totalmin_arr_time,totalmin_dep_time,air_time,air_time2)
+head(arrs)
+
+
+```
+#### 3. Compare dep_time, sched_dep_time, and dep_delay. How would you expect those three numbers to be related?
+
+```{r}
+dep <- select(flights,dep_time,sched_dep_time,dep_delay)
+dep1 <- mutate(dep,dep_delay2 = dep_time - sched_dep_time)
+dep1
+dep2 <- mutate(flights, h_dep_time = dep_time %/% 100,
+              min_dep_time = dep_time %% 100,
+              totalmin_dep_time = h_dep_time*60+min_dep_time,
+              h_sched_dep_time = sched_dep_time %/% 100,
+              min_sched_dep_time = sched_dep_time %% 100,
+              totalmin_sched_dep_time = h_sched_dep_time*60+min_sched_dep_time,
+              dep_delay2 = totalmin_dep_time - totalmin_sched_dep_time)
+dep3 <- select(dep2,dep_delay,dep_delay2)
+dep3
+#dep3 results are in minutes
+```
+
+####4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank().
+
+```{r}
+rank_delay <- mutate(flights, rank = min_rank(dep_delay))
+rank_delay_desc <- arrange(rank_delay,desc(rank))
+rank_delay_desc
+```
+
+
+####5.  What does 1:3 + 1:10 return? Why?
+```{r}
+1:3 + 1:10
+1:3
+1:10
+1:10+1:3
+
+```
+
+####6. What trigonometric functions does R provide?
+```{r}
+?base::Trig
+#shows all the trig functions
+```
+
+###5.6 Grouped summaries with summarise()
+```{r}
+
+
+
+```
+
+
 
