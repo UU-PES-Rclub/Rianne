@@ -1,0 +1,29 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+
+df <- read_excel("21-10-26_09_left_output.xlsx")
+
+
+```
+
+#modifications
+```{r}
+calc <- select(df, pixlen, pet.len) %>%
+  mutate(petinmm = 10*pet.len/pixlen)
+
+
+```
+
+
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
