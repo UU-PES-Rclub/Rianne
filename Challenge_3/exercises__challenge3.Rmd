@@ -1,0 +1,18 @@
+To practice our data transformation skills, we can plot the following:
+1) pet.angle over image. Image is a proxy for time
+2) leaf.angle over image
+3) pet.len over image -> BUT...pet.len units is in pixels!!!! 
+Better to convert it to mm to do so, create a new column using the mutate function and DIVIDE the pet.len with the pixlen and multiple by 10.
+(pet.len/pixel*10) -> this will give you the length of the petiole in mm
+Because we have two plants (Plant01 and Plant02)...You can also try to calculate the MEAN pet.angle of each time.point using the summarise function and plot it. Think about how you have to group your table.
+Try and experiment different things, a goal of this exercise is that you get the confidence to do ANYTHING you want with your table.
+
+
+Here are the things for the challenge, please copy this and write every new thing you want to do with the data
+To practice our data transformation skills, plot the following:
+1) pet.angle over image. Image is a proxy for time
+2) leaf.angle over image
+3) pet.len and lamina.len over image -> BUT...pet.len and lamina.len units is in pixels!!!! Better to convert it to mm (pet.len/pixel*10)
+4) Set a baseline for all angle and len measurements. Baseline is the average measurements of the five initial images. Hint: top_n()/slice(), mutate(baseline = mean(), corrected.values = MEASUREMENT - baseline).
+---
+5) Every image is taken in minute intervals. Image 5 is the image taken after 5 minutes that the experiment started. Given that we know the experiment started at 10:00AM -> Create a column that show the time of the day in which the photo was taken

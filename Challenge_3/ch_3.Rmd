@@ -4,26 +4,78 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
+#filter
+#arrange
+#select
+#mutate
+#summarise
 library(tidyverse)
+library(ggblanket)
 library(readxl)
 
-df <- read_excel("21-10-26_09_left_output.xlsx")
+left_output <- read_excel("21-10-26_09_left_output.xlsx")
+df <- read.table("lisadatacombined-RCLUB.txt",sep="\t",header=T)
+head(df)
+```
+
+```{r}
+#pet.angle over image
+ggplot(df) +
+  geom_line(aes(image,pet.angle,colour=plant))
+#leaf.angle over image
+ggplot(df) +
+  geom_line(aes(image,leaf.angle,colour=plant))
+#leaf.angle gives a smoother line
 
 
 ```
+
+
 
 #modifications
 ```{r}
-calc <- select(df, pixlen, pet.len) %>%
+calc <- select(df, pixlen, pet.len, plant, image) %>%
   mutate(petinmm = 10*pet.len/pixlen)
 
-
+#pet.angle over image
+ggplot(calc) +
+  geom_line(aes(image,petinmm,colour=plant))
+ggplot(calc) +
+  geom_smooth(aes(image,petinmm,colour=plant))
 ```
 
 
 
-```{r pressure, echo=FALSE}
+```{r}
+head(df)
+dfmm <- df %>%
+  select(image, pet.len:plant) %>%
+  mutate(petinmm = 10*pet.len/pixlen, leafleninmm = 10*leaf.len/pixlen, laminmm = 10*lamina.len/pixlen) 
+
+#plots
+ggplot(dfmm) +
+  geom_line(aes(image,petinmm,colour=plant))
+ggplot(dfmm) +
+  geom_line(aes(image,leafleninmm,colour=plant))
+ggplot(dfmm) +
+  geom_line(aes(image,laminmm,colour=plant))
+
+
+ggplot(dfmm) +
+  geom_line(aes(image,petinmm,colour=plant))+
+  geom_smooth(aes(image,petinmm,colour=plant))
+ggplot(dfmm) +
+  geom_line(aes(image,leafleninmm,colour=plant))+
+   geom_smooth(aes(image,leafleninmm,colour=plant))
+ggplot(dfmm) +
+  geom_line(aes(image,laminmm,colour=plant))+
+  geom_smooth(aes(image,laminmm,colour=plant))
+
+```
+#MEAN pet.angle
+```{r}
+by_image <- group_by(dfmm, image, plant, pet.angle)
+summarise(by_image, mean.angle = mean(pet.angle, na.rm = TRUE))
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
