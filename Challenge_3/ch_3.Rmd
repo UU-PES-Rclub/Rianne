@@ -89,8 +89,8 @@ head(dfmm)
 means <- select(dfmm, -(image), -(pixlen:plant)) %>%
   summarise(mean.pet.len = mean(petinmm), mean.pet.angle = mean(pet.angle), mean.leaf.len = mean(leafleninmm), mean.leaf.angle = mean(leaf.angle), mean.lam.len = mean(laminmm), mean.lam.angle = mean(lamina.angle))  
 
-dfmm
-means
+head(dfmm)
+head(means)
 
 baseline <- select(dfmm, -(image), -(pixlen:plant)) %>%
   slice(1:5) %>%
@@ -120,21 +120,21 @@ ggplot(cor_bl) +
   geom_smooth(aes(image,leaf.angle),colour="green") +
   geom_smooth(aes(image,cor.leaf.angle),colour="light green")
 
-ggplot(cor_bl) +
-  geom_line(aes(image,pet.angle),colour="green") +
-  geom_line(aes(image,cor.leaf.angle),colour="light green")
+#ggplot(cor_bl) +
+  #geom_line(aes(image,pet.angle),colour="green") +
+  #geom_line(aes(image,cor.leaf.angle),colour="light green")
 
-ggplot(cor_bl) +
-  geom_smooth(aes(image,pet.angle),colour="green") +
-  geom_smooth(aes(image,cor.pet.angle),colour="light green")
+#ggplot(cor_bl) +
+  #geom_smooth(aes(image,pet.angle),colour="green") +
+  #geom_smooth(aes(image,cor.pet.angle),colour="light green")
 
-ggplot(cor_bl) +
-  geom_line(aes(image,pet.angle),colour="green") +
-  geom_line(aes(image,cor.leaf.angle),colour="light green")
+#ggplot(cor_bl) +
+  #geom_line(aes(image,pet.angle),colour="green") +
+  #geom_line(aes(image,cor.leaf.angle),colour="light green")
 
-ggplot(cor_bl) +
-  geom_smooth(aes(image,lamina.angle),colour="green") +
-  geom_smooth(aes(image,cor.lamina.angle),colour="light green")
+#ggplot(cor_bl) +
+  #geom_smooth(aes(image,lamina.angle),colour="green") +
+ # geom_smooth(aes(image,cor.lamina.angle),colour="light green")
 
 ```
 
@@ -150,11 +150,11 @@ time %<>%
 ggplot(time) +
  geom_point(aes(hh.mm, cor.pet.len))
   
-ggplot(time)+
-  geom_line(aes(hh.mm, cor.pet.len))
+#ggplot(time)+
+ # geom_line(aes(hh.mm, cor.pet.len))
 
-ggplot(time)+
-  geom_line(aes(hh.mm, cor.pet.len))
+#ggplot(time)+
+ # geom_line(aes(hh.mm, cor.pet.len))
 
 
 ```
